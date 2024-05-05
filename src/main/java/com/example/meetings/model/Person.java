@@ -29,6 +29,8 @@ public class Person {
     @Column(name = "age")
     private Integer age;
 
-    @OneToOne(mappedBy = "person")
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id")
     private User user;
 }

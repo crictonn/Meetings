@@ -1,7 +1,9 @@
 package com.example.meetings.service;
 
 import com.example.meetings.controller.request.RegisterRequest;
+import com.example.meetings.model.Person;
 import com.example.meetings.model.User;
+import com.example.meetings.repository.PersonRepository;
 import com.example.meetings.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,35 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService {
     private UserRepository userRepository;
+    private PersonRepository personRepository;
+
+    @Autowired
+    public void setPersonRepository(PersonRepository personRepository){
+        this.personRepository = personRepository;
+    }
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public Long getUserID(String username){
+        return userRepository.findUserByUsername(username).get().getId();
+    }
+
+    public RegisterRequest getAllData(String username){
+        User user = userRepository.findUserByUsername(username).orElseThrow();
+        Person person = personRepository.findPersonById(getUserID(username)).orElseThrow();
+        return RegisterRequest.builder()
+                .firstName(person.getFirstName())
+                .lastName(person.getLastName())
+                .username(username)
+                .age(person.getAge())
+                .gender(person.getGender())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .build();
+
     }
 
     @Override

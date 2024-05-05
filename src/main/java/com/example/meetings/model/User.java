@@ -34,8 +34,8 @@ public class User implements UserDetails {
     @Column(name = "role", length = 15, nullable = false)
     private Roles role;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private Person person;
 
    @ManyToMany

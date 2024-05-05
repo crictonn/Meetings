@@ -5,8 +5,10 @@ import com.example.meetings.controller.request.AuthenticationRequest;
 import com.example.meetings.controller.request.AuthenticationResponse;
 import com.example.meetings.controller.request.RegisterRequest;
 import com.example.meetings.jwt.JwtCore;
+import com.example.meetings.model.Person;
 import com.example.meetings.model.User;
 import com.example.meetings.model.enums.Roles;
+import com.example.meetings.repository.PersonRepository;
 import com.example.meetings.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
     private final UserRepository userRepository;
+    private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtCore jwtCore;
     private final AuthenticationManager authenticationManager;
@@ -29,11 +32,21 @@ public class AuthenticationService {
                 .role(Roles.USER)
                 .build();
         userRepository.save(user);
+
+        var person = Person.builder()
+                .user(userRepository.findUserByUsername(request.getUsername()).orElseThrow())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .gender(request.getGender())
+                .age(request.getAge())
+                .build();
+        personRepository.save(person);
+
         var jwtToken = jwtCore.generateToken(user);
 
         return AuthenticationResponse.builder()
                 .jwt(jwtToken)
-                .role(String.valueOf(Roles.USER))
+                .role(String.valueOf(user.getRole()))
                 .build();
     }
 
