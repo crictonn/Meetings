@@ -63,6 +63,11 @@ public class User implements UserDetails {
     }
 
     @Override
+    public String toString(){
+        return "username:" + username + ", email:" + email + ", role:" + role;
+    }
+
+    @Override
     public String getPassword() {
         return password;
     }

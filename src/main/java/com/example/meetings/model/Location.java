@@ -21,6 +21,9 @@ public class Location {
     @Column(name = "location")
     private String location;
 
+    @Column(name = "name")
+    private String name;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private LocationTypes locationType;

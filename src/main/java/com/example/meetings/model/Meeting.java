@@ -36,5 +36,5 @@ public class Meeting {
     private Long locationID;
 
     @ManyToMany
-    private List<User> participants;
+    private List<User> user;
 }

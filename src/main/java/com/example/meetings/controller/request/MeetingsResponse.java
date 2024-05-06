@@ -11,10 +11,11 @@ import java.sql.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MeetingsRequest {
+public class MeetingsResponse {
     private Date date;
     private String name;
     private String description;
-    private Long location;
+    private String location;
     private String owner;
+    private Boolean isOwner;
 }

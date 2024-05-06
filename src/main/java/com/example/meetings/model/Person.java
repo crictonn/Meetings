@@ -33,4 +33,9 @@ public class Person {
     @MapsId
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Override
+    public String toString(){
+        return "firstName:" + firstName + ", lastName:" + lastName + ", gender:" + gender + ", age:" + age;
+    }
 }
